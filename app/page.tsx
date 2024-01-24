@@ -1,9 +1,7 @@
+import { redirect } from "next/navigation";
+import { auth } from "./auth";
 
-export default function Home() {
-  return (
-
-    <main>
-      hello lazy doc
-    </main>
-  );
+export default async function Home() {
+  const session = await auth();
+  redirect(session ? "/dashboard" : '/login')
 }
