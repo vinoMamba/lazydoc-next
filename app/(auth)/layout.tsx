@@ -1,8 +1,6 @@
-import { ReactNode } from "react";
-
-export default function AuthLayout({ children }: { children: ReactNode }) {
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className=" h-screen w-screen flex items-center justify-center">
+    <main className="min-h-screen">
       {children}
     </main>
   )
