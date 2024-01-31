@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 
 const formSchema = z.object({
@@ -14,6 +16,7 @@ const formSchema = z.object({
 })
 
 export const RegisterForm: FC = () => {
+  const {replace} = useRouter()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,7 +34,15 @@ export const RegisterForm: FC = () => {
       body: JSON.stringify(data),
     })
     const json = await res.json()
-    console.log(json)
+
+    if (res.status !== 200) {
+      return toast.success("Register failed", {
+        description: json.message,
+      })
+    }
+
+    replace('/login')    
+    return toast.success("Register success")
   })
 
   return (
@@ -50,8 +61,7 @@ export const RegisterForm: FC = () => {
                 <FormMessage />
               </FormItem>
             )
-          }
-          }
+          }}
         />
         <FormField
           control={form.control}
