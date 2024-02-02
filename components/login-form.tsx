@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { signIn } from "next-auth/react"
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
@@ -15,8 +16,8 @@ const formSchema = z.object({
   password: z.string().min(6, { message: 'Password must be at least 6 characters long' }).max(100, { message: 'Password must be at most 100 characters long' })
 })
 
-export const RegisterForm: FC = () => {
-  const {replace} = useRouter()
+export const LoginForm: FC = () => {
+  const router = useRouter()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -26,23 +27,19 @@ export const RegisterForm: FC = () => {
   })
 
   const onSubmit = form.handleSubmit(async (data: z.infer<typeof formSchema>) => {
-    const res = await fetch('basic-api/user/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data),
+    const res = await signIn('credentials', {
+      email: data.email,
+      password: data.password,
+      redirect: false,
     })
-    const json = await res.json()
 
-    if (res.status !== 200) {
-      return toast.success("Register failed", {
-        description: json.message,
+    if(res?.error){
+      return toast.error("Login failed", {
+        description: res.error,
       })
     }
-
-    replace('/login')    
-    return toast.success("Register success")
+    router.replace('/workbench')
+    return toast.success("Login success")
   })
 
   return (
@@ -76,7 +73,7 @@ export const RegisterForm: FC = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className=' w-full'>Sign Up</Button>
+        <Button type="submit" className=' w-full'>Sign In</Button>
       </form>
     </Form>
   )

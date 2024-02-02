@@ -1,21 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { signIn } from "@/app/auth";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { LoginForm } from "@/components/login-form";
 
 export default function Login() {
 
-  const handleSubmit = async (data: FormData) => {
-    'use server'
-    await signIn("credentials", {
-      redirectTo: "/dashboard",
-      email: data.get('email') as string,
-      password: data.get('password') as string,
-    })
-  }
+  // const handleSubmit = async (data: FormData) => {
+  //   'use server'
+  //   await signIn("credentials", {
+  //     redirectTo: "/dashboard",
+  //     email: data.get('email') as string,
+  //     password: data.get('password') as string,
+  //   })
+  // }
   return (
     <div className="container h-screen flex items-center justify-center">
       <Button asChild variant="ghost" className=" absolute top-4 left-4">
@@ -29,7 +27,8 @@ export default function Login() {
           <h1>Sign In</h1>
         </CardHeader>
         <CardContent>
-          <form action={handleSubmit}>
+          <LoginForm />
+          {/* <form action={handleSubmit}>
             <div className=" grid w-full gap-4 items-center">
               <div className=" flex flex-col space-y-1.5">
                 <Label htmlFor="email">Email</Label>
@@ -43,7 +42,7 @@ export default function Login() {
                 <Button type="submit" className=" w-full">Sign In</Button>
               </div>
             </div>
-          </form>
+          </form> */}
         </CardContent>
         <CardFooter>
           <p className="text-center text-sm text-gray-600">
