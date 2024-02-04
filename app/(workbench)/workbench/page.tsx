@@ -1,5 +1,8 @@
-export default function Workbench(){
+import { auth } from "@/lib/auth"
+
+export default async function Workbench(){
+  const s = await auth()
   return (
-    <div>workbench</div>
+    <div>{JSON.stringify(s)}</div>
   )
 }

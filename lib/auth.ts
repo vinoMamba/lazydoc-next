@@ -1,7 +1,20 @@
-import { NextAuthConfig } from "next-auth";
+import NextAuth, { DefaultSession, NextAuthConfig, User } from "next-auth";
+import { DefaultJWT } from 'next-auth/jwt'
 import Credentials from 'next-auth/providers/credentials';
 
-export const authConfig: NextAuthConfig = {
+interface CustomSession extends DefaultSession {
+  token: string;
+}
+
+interface CustomUser extends User {
+  token: string;
+}
+interface CustomJwt extends DefaultJWT {
+  token: string;
+}
+
+
+const authConfig: NextAuthConfig = {
   pages: {
     signIn: '/login',
   },
@@ -22,14 +35,31 @@ export const authConfig: NextAuthConfig = {
         if (!res.ok) {
           return null
         }
-        return user
+        return user as CustomUser
       },
     })
   ],
+  session: {
+    strategy: 'jwt',
+  },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
-      console.log('authorized', auth, nextUrl)
-      return true;
+    async jwt(j) {
+      if (j.user) {
+        j.token.token = (j.user as CustomUser).token
+      }
+      return j.token;
     },
+    async session(s) {
+      const { session, token } = s as unknown as { session: CustomSession, token: CustomJwt }
+      session.token = token.token
+      return session
+    }
   }
 }
+
+
+export const { handlers, auth: au, signIn, signOut } = NextAuth(authConfig)
+
+
+// Type fix
+export const auth = async () => await au() as unknown as CustomSession | null
