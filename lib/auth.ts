@@ -2,15 +2,19 @@ import NextAuth, { DefaultSession, NextAuthConfig, User } from "next-auth";
 import { DefaultJWT } from 'next-auth/jwt'
 import Credentials from 'next-auth/providers/credentials';
 
-interface CustomSession extends DefaultSession {
-  token: string;
+interface CustomUser extends User {
+  token: string
+  email: string
+  username: string
+  avatar: string
 }
 
-interface CustomUser extends User {
-  token: string;
+interface CustomSession extends DefaultSession {
+  info: CustomUser
 }
+
 interface CustomJwt extends DefaultJWT {
-  token: string;
+  info: CustomUser
 }
 
 
@@ -45,13 +49,14 @@ const authConfig: NextAuthConfig = {
   callbacks: {
     async jwt(j) {
       if (j.user) {
-        j.token.token = (j.user as CustomUser).token
+        j.token.info = j.user
       }
       return j.token;
     },
     async session(s) {
       const { session, token } = s as unknown as { session: CustomSession, token: CustomJwt }
-      session.token = token.token
+      session.info = token.info
+
       return session
     }
   }
