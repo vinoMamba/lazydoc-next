@@ -2,11 +2,7 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { auth } from "@/lib/auth";
-
-function getFallbackInfo(str: string | undefined) {
-  if (!str) return "U";
-  return str.charAt(0).toUpperCase();
-}
+import { getFirstLetter } from "@/lib/utils";
 
 export async function UserDropdown() {
   const s = await auth();
@@ -15,7 +11,7 @@ export async function UserDropdown() {
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
           <AvatarImage src={s?.info.avatar} alt="User" />
-          <AvatarFallback>{getFallbackInfo(s?.info.username)}</AvatarFallback>
+          <AvatarFallback>{getFirstLetter(s?.info.username)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
