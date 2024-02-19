@@ -1,3 +1,4 @@
+import { encryption } from "@/lib/crypt"
 import { db } from "@/lib/db"
 import { registerSchema } from "@/lib/validators/user"
 import { z } from "zod"
@@ -13,11 +14,12 @@ export async function POST(req: Request) {
         { status: 400, statusText: 'Email already exists' }
       )
     }
+    const encryptedPassword = encryption.encryptByAES(body.password)
     const newU = await db.user.create({
       data: {
         email: body.email,
         username: body.email,
-        password: body.password
+        password: encryptedPassword
       }
     })
     return new Response(JSON.stringify(newU))
