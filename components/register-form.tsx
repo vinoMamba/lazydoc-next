@@ -26,18 +26,17 @@ export const RegisterForm: FC = () => {
   })
 
   const onSubmit = form.handleSubmit(async (data: z.infer<typeof formSchema>) => {
-    const res = await fetch('basic-api/user/register', {
+    const res = await fetch('api/user/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data),
     })
-    const json = await res.json()
 
     if (res.status !== 200) {
-      return toast.success("Register failed", {
-        description: json.message,
+      return toast.error("Register failed", {
+        description: res.statusText
       })
     }
 
