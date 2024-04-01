@@ -21,7 +21,7 @@ export const RegisterForm = () => {
       password: "",
     }
   })
-  const { execute } = useAction<z.infer<typeof RegisterSchema>>(registerAction, {
+  const { execute, isPending } = useAction<z.infer<typeof RegisterSchema>>(registerAction, {
     onSuccess: () => {
       toast.success("Account created successfully")
     },
@@ -46,6 +46,7 @@ export const RegisterForm = () => {
             <FormField
               control={form.control}
               name="username"
+              disabled={isPending}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
@@ -59,6 +60,7 @@ export const RegisterForm = () => {
             <FormField
               control={form.control}
               name="email"
+              disabled={isPending}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
@@ -72,6 +74,7 @@ export const RegisterForm = () => {
             <FormField
               control={form.control}
               name="password"
+              disabled={isPending}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
@@ -83,7 +86,7 @@ export const RegisterForm = () => {
               )}
             />
           </div>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={isPending}>
             Sign Up
           </Button>
         </form>

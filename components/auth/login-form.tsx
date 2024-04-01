@@ -7,6 +7,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { LoginSchema } from "@/actions/login/schema"
+import { useAction } from "@/hooks/use-action"
+import { loginAction } from "@/actions/login"
+import { toast } from "sonner"
 
 export const LoginForm = () => {
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -14,6 +17,15 @@ export const LoginForm = () => {
     defaultValues: {
       email: "",
       password: ""
+    }
+  })
+
+  const { execute, isPending } = useAction<z.infer<typeof LoginSchema>>(loginAction, {
+    onSuccess: () => {
+      toast.success("Login successfully")
+    },
+    onError: (error) => {
+      toast.error(error)
     }
   })
 
@@ -25,13 +37,14 @@ export const LoginForm = () => {
     >
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit((values) => { })}
+          onSubmit={form.handleSubmit((values) => execute(values))}
           className=" space-y-6"
         >
           <div className=" space-y-4">
             <FormField
               control={form.control}
               name="email"
+              disabled={isPending}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
@@ -45,6 +58,7 @@ export const LoginForm = () => {
             <FormField
               control={form.control}
               name="password"
+              disabled={isPending}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
@@ -56,7 +70,7 @@ export const LoginForm = () => {
               )}
             />
           </div>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={isPending}>
             Sign In
           </Button>
         </form>
