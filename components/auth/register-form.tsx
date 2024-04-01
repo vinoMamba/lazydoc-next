@@ -7,15 +7,26 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { RegisterSchema } from "@/actions/register/schema"
 import { CardWrapper } from "./card-wrapper"
+import { registerAction } from "@/actions/register"
+import { toast } from "sonner"
+import { useAction } from "@/hooks/use-action"
 
 
 export const RegisterForm = () => {
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      name: "",
+      username: "",
       email: "",
       password: "",
+    }
+  })
+  const { execute } = useAction<z.infer<typeof RegisterSchema>>(registerAction, {
+    onSuccess: () => {
+      toast.success("Account created successfully")
+    },
+    onError: (error) => {
+      toast.error(error)
     }
   })
 
@@ -28,13 +39,13 @@ export const RegisterForm = () => {
     >
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(values => {})}
+          onSubmit={form.handleSubmit(values => execute(values))}
           className=" space-y-6"
         >
           <div className=" space-y-4">
             <FormField
               control={form.control}
-              name="name"
+              name="username"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
