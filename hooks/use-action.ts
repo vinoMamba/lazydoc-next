@@ -20,17 +20,15 @@ export const useAction = <I, O = null>(
         setData(null)
         action(values)
           .then((result) => {
-            if (result.error) {
-              setError(result.error)
-              options?.onError?.(result.error)
-            } else {
-              setData(result.data)
-              options?.onSuccess?.(result.data)
+            if (result) {
+              if (result.error) {
+                setError(result.error)
+                options?.onError?.(result.error)
+              } else {
+                setData(result.data || null)
+                options?.onSuccess?.(result.data)
+              }
             }
-          })
-          .catch((error) => {
-            setError(error)
-            options?.onError?.(error)
           })
           .finally(() => {
             options?.onCompleted?.()

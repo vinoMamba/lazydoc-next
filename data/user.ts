@@ -9,10 +9,10 @@ export async function getUserByEmail(email: string) {
 }
 
 
-export async function createUser(username: string, email: string, password: string) {
+export async function createUser(name: string, email: string, password: string) {
   return db.user.create({
     data: {
-      username,
+      name,
       email,
       password
     }

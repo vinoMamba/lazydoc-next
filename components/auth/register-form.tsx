@@ -16,11 +16,12 @@ export const RegisterForm = () => {
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      username: "",
+      name: "",
       email: "",
       password: "",
     }
   })
+
   const { execute, isPending } = useAction<z.infer<typeof RegisterSchema>>(registerAction, {
     onSuccess: () => {
       toast.success("Account created successfully")
@@ -45,7 +46,7 @@ export const RegisterForm = () => {
           <div className=" space-y-4">
             <FormField
               control={form.control}
-              name="username"
+              name="name"
               disabled={isPending}
               render={({ field }) => (
                 <FormItem>

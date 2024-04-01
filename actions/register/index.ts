@@ -12,7 +12,7 @@ export const registerAction: Action<z.infer<typeof RegisterSchema>> = async (val
       error: "Invalid data"
     }
   }
-  const { email, password, username } = validateValues.data
+  const { email, password, name } = validateValues.data
   const hashedPassword = crypto.encryptByAES(password)
   try {
     const user = await getUserByEmail(email);
@@ -21,7 +21,7 @@ export const registerAction: Action<z.infer<typeof RegisterSchema>> = async (val
         error: "User already exists"
       }
     }
-    await createUser(username, email, hashedPassword)
+    await createUser(name, email, hashedPassword)
     return {
       data: null
     }
