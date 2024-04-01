@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-mode/theme-provider";
+import { config } from "@/config/site";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Lazy Doc",
-  description: "An interface documentation app built with Next.js",
+  title: config.title,
+  description: config.description,
 };
 
 export default function RootLayout({
