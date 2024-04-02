@@ -1,3 +1,5 @@
+import { ChangeEmailDialog } from "@/components/settings/change-email-dialog";
+import { ChangePasswordDialog } from "@/components/settings/change-password-dialog";
 import { SetterItem } from "@/components/settings/setter-item";
 import { SubTitle } from "@/components/settings/sub-title";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -33,10 +35,10 @@ export default async function SettingsPage() {
           <SubTitle title="Account security" />
           <div className="flex flex-col gap-y-2">
             <SetterItem title="Email" subTitle={session?.user?.email}>
-              <Button>Change email</Button>
+              <ChangeEmailDialog email={session?.user?.email || ""} />
             </SetterItem>
             <SetterItem title="Password" subTitle="Set a permanent password to login to your account.">
-              <Button>Change password</Button>
+              <ChangePasswordDialog />
             </SetterItem>
           </div>
         </div>

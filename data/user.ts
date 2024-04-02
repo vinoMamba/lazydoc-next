@@ -8,6 +8,14 @@ export async function getUserByEmail(email: string) {
   })
 }
 
+export async function getUserById(id: string) {
+  return db.user.findUnique({
+    where: {
+      id
+    }
+  })
+}
+
 
 export async function createUser(name: string, email: string, password: string) {
   return db.user.create({
