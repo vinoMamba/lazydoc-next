@@ -1,7 +1,7 @@
 import { Logo } from "@/components/logo"
 import { ModeToggle } from "@/components/theme-mode/theme-toggle"
-import { Settings2 } from "lucide-react"
 import { UserButton } from "@/components/user/user-button"
+import Link from "next/link"
 
 export const ProjectNav = () => {
   return (
@@ -10,7 +10,6 @@ export const ProjectNav = () => {
         <Logo />
         <div className="flex items-center justify-between gap-x-2 w-full md:w-auto">
           <ModeToggle />
-          <Settings2 className="cursor-pointer" />
           <UserButton />
         </div>
       </div>

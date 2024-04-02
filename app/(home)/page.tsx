@@ -28,8 +28,8 @@ export default function Home() {
       </p>
       <div className=" flex items-center gap-x-2 mt-6">
         <Button size="lg" asChild>
-          <Link href="/register">
-            Get Started for free
+          <Link href="/login">
+            Login
           </Link>
         </Button>
         <Button size="lg" variant="secondary" asChild>
