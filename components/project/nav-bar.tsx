@@ -1,7 +1,6 @@
 import { Logo } from "@/components/logo"
 import { ModeToggle } from "@/components/theme-mode/theme-toggle"
 import { UserButton } from "@/components/user/user-button"
-import Link from "next/link"
 
 export const ProjectNav = () => {
   return (
